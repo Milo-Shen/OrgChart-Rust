@@ -10,15 +10,14 @@ pub enum CardNodeType {
     EXTEND,
 }
 
-pub struct CardNode<T> {
+pub struct CardNode {
     id: i64,
-    content: T,
-    children: RefCell<Vec<Rc<CardNode<T>>>>,
-    parent: RefCell<Weak<CardNode<T>>>,
-    previous: RefCell<Weak<CardNode<T>>>,
+    children: RefCell<Vec<Rc<CardNode>>>,
+    parent: RefCell<Weak<CardNode>>,
+    previous: RefCell<Weak<CardNode>>,
     level: i64,
-    level_previous: RefCell<Weak<CardNode<T>>>,
-    level_first: RefCell<Weak<CardNode<T>>>,
+    level_previous: RefCell<Weak<CardNode>>,
+    level_first: RefCell<Weak<CardNode>>,
     width: f32,
     height: f32,
     pos_x: f32,
@@ -26,11 +25,10 @@ pub struct CardNode<T> {
     mode: CardNodeType,
 }
 
-impl<T> CardNode<T> {
-    pub fn new(id: i64, content: T, w: f32, h: f32, mode: CardNodeType) -> CardNode<T> {
+impl CardNode {
+    pub fn new(id: i64, w: f32, h: f32, mode: CardNodeType) -> CardNode {
         CardNode {
             id,
-            content,
             children: RefCell::new(vec![]),
             parent: RefCell::new(Weak::new()),
             previous: RefCell::new(Weak::new()),
@@ -46,12 +44,12 @@ impl<T> CardNode<T> {
     }
 }
 
-pub struct OrgChart<T> {
-    root: Option<Rc<CardNode<T>>>,
-    previous_card: RefCell<Weak<CardNode<T>>>,
-    card_map: HashMap<i64, Rc<CardNode<T>>>,
-    card_list: RefCell<Vec<Rc<CardNode<T>>>>,
-    card_linked_list: RefCell<VecDeque<Vec<Rc<CardNode<T>>>>>,
+pub struct OrgChart {
+    root: Option<Rc<CardNode>>,
+    previous_card: RefCell<Weak<CardNode>>,
+    card_map: HashMap<i64, Rc<CardNode>>,
+    card_list: RefCell<Vec<Rc<CardNode>>>,
+    card_linked_list: RefCell<VecDeque<Vec<Rc<CardNode>>>>,
     line_list: RefCell<Vec<LineNode>>,
     line_width: f32,
     line_color: String,
@@ -66,4 +64,8 @@ pub struct OrgChart<T> {
     horizon_gap: f32,
     vertical_gap: f32,
     batch_column_capacity: i64,
+}
+
+impl OrgChart {
+    pub fn new() {}
 }
