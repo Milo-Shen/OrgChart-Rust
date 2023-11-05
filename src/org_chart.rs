@@ -2,13 +2,11 @@ use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
-struct LineNode {}
-
 pub enum CardNodeType {
-    NORMAL = 0,
-    LITE = 1 << 0,
-    BATCH = 1 << 1,
-    EXTEND = 1 << 2,
+    NORMAL,
+    LITE,
+    BATCH,
+    EXTEND,
 }
 
 pub struct CardNode<T> {
