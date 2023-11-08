@@ -1,7 +1,7 @@
+use rand::Rng;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
-use rand::Rng;
 
 pub struct GenerateID {
     id: i64,
@@ -38,7 +38,11 @@ pub fn range(min: i64, max: i64) -> i64 {
     rng.gen_range(min..max)
 }
 
-pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Rc<RefCell<MockChartData>>> {
+pub fn mock_org_chart_data(
+    count: i64,
+    max_child: i64,
+    is_range: bool,
+) -> Vec<Rc<RefCell<MockChartData>>> {
     let mut result = vec![];
     let mut queue = VecDeque::new();
     let mut generate_id = GenerateID::new();
