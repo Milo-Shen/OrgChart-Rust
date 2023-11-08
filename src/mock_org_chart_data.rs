@@ -9,7 +9,7 @@ pub struct GenerateID {
 
 impl GenerateID {
     pub fn new() -> GenerateID {
-        GenerateID { id: 0 }
+        GenerateID { id: -1 }
     }
 
     pub fn get_next_id(&mut self) -> i64 {
@@ -18,13 +18,13 @@ impl GenerateID {
     }
 }
 
+#[derive(Debug)]
 pub struct MockChartData {
     id: i64,
     children: Vec<i64>,
 }
 
-pub fn build_card() -> MockChartData {
-    let mut generate_id = GenerateID::new();
+pub fn build_card(generate_id: &mut GenerateID) -> MockChartData {
     let id = generate_id.get_next_id();
 
     MockChartData {
@@ -41,12 +41,13 @@ pub fn range(min: i64, max: i64) -> i64 {
 pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Rc<RefCell<MockChartData>>> {
     let mut result = vec![];
     let mut queue = VecDeque::new();
+    let mut generate_id = GenerateID::new();
 
     // generated leaf count
     let mut remain_count = count - 1;
 
     // build the root leaf
-    let root = Rc::new(RefCell::new(build_card()));
+    let root = Rc::new(RefCell::new(build_card(&mut generate_id)));
 
     result.push(Rc::clone(&root));
     queue.push_back(Rc::clone(&root));
@@ -64,7 +65,7 @@ pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Rc
         for i in 0..child_count {
             remain_count -= 1;
 
-            let card = Rc::new(RefCell::new(build_card()));
+            let card = Rc::new(RefCell::new(build_card(&mut generate_id)));
             children.push(card.borrow().id);
             queue.push_back(Rc::clone(&card));
             result.push(Rc::clone(&card));

@@ -2,8 +2,8 @@ mod line;
 mod mock_org_chart_data;
 mod org_chart;
 
-use crate::mock_org_chart_data::range;
-
 fn main() {
-    println!("Hello, world!,{}", range(0, 10));
+    let test = mock_org_chart_data::mock_org_chart_data(10, 4, false);
+    println!("{:?}", test);
+    println!("Hello, world!");
 }
