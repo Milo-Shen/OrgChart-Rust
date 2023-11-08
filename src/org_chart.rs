@@ -1,5 +1,5 @@
 // use std
-use std::cell::{RefCell};
+use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
