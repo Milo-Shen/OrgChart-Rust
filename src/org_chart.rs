@@ -5,6 +5,7 @@ use std::rc::{Rc, Weak};
 
 //  use local types
 use crate::line::LineNode;
+use crate::mock_org_chart_data::MockChartData;
 
 pub enum CardNodeType {
     NORMAL,
@@ -55,8 +56,6 @@ pub struct OrgChart {
     card_linked_list: RefCell<VecDeque<Vec<Rc<CardNode>>>>,
     line_list: RefCell<Vec<LineNode>>,
     line_width: f32,
-    line_color: String,
-    line_radius: f32,
     fixed_size: bool,
     fixed_width: f32,
     fixed_height: f32,
@@ -70,5 +69,17 @@ pub struct OrgChart {
 }
 
 impl OrgChart {
-    pub fn new() {}
+    pub fn new(
+        card_raw_list: Vec<Rc<RefCell<MockChartData>>>,
+        fixed_size: bool,
+        fixed_width: f32,
+        fixed_height: f32,
+        lite_width: f32,
+        lite_height: f32,
+        horizon_gap: f32,
+        vertical_gap: f32,
+        line_width: f32,
+        batch_column_capacity: i64,
+    ) {
+    }
 }
