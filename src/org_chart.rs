@@ -53,7 +53,7 @@ pub struct OrgChart {
     previous_card: RefCell<Weak<CardNode>>,
     card_map: HashMap<i64, Rc<CardNode>>,
     card_list: RefCell<Vec<Rc<CardNode>>>,
-    card_linked_list: RefCell<VecDeque<Vec<Rc<CardNode>>>>,
+    card_linked_list: RefCell<VecDeque<Rc<CardNode>>>,
     line_list: RefCell<Vec<LineNode>>,
     line_width: f32,
     fixed_size: bool,
@@ -80,6 +80,25 @@ impl OrgChart {
         vertical_gap: f32,
         line_width: f32,
         batch_column_capacity: i64,
-    ) {
+    ) -> OrgChart {
+        OrgChart {
+            root: None,
+            previous_card: RefCell::new(Weak::new()),
+            card_map: HashMap::new(),
+            card_list: RefCell::new(vec![]),
+            card_linked_list: RefCell::new(VecDeque::new()),
+            line_list: RefCell::new(vec![]),
+            line_width,
+            fixed_size,
+            fixed_width,
+            fixed_height,
+            lite_width,
+            lite_height,
+            fixed_overall_width: 0.0,
+            fixed_overall_height: 0.0,
+            horizon_gap,
+            vertical_gap,
+            batch_column_capacity,
+        }
     }
 }
