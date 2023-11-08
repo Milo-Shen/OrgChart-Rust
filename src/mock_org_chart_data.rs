@@ -1,3 +1,4 @@
+use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
 use rand::Rng;
@@ -37,7 +38,7 @@ pub fn range(min: i64, max: i64) -> i64 {
     rng.gen_range(min..max)
 }
 
-pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<MockChartData> {
+pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Rc<RefCell<MockChartData>>> {
     let mut result = vec![];
     let mut queue = VecDeque::new();
 
@@ -45,7 +46,7 @@ pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Mo
     let mut remain_count = count - 1;
 
     // build the root leaf
-    let root = Rc::new(build_card());
+    let root = Rc::new(RefCell::new(build_card()));
 
     result.push(Rc::clone(&root));
     queue.push_back(Rc::clone(&root));
@@ -63,14 +64,18 @@ pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<Mo
         for i in 0..child_count {
             remain_count -= 1;
 
-            let card = Rc::new(build_card());
-            children.push(card.id);
+            let card = Rc::new(RefCell::new(build_card()));
+            children.push(card.borrow().id);
             queue.push_back(Rc::clone(&card));
             result.push(Rc::clone(&card));
         }
 
-        node.children = children;
+        node.borrow_mut().children = children;
+
+        if remain_count <= 0 {
+            return result;
+        }
     }
 
-    vec![]
+    result
 }
