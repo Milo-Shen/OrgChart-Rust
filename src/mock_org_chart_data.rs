@@ -20,8 +20,8 @@ impl GenerateID {
 
 #[derive(Debug)]
 pub struct MockChartData {
-    id: i64,
-    children: Vec<i64>,
+    pub id: i64,
+    pub children: Vec<i64>,
 }
 
 pub fn build_card(generate_id: &mut GenerateID) -> MockChartData {

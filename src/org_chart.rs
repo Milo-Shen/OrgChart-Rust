@@ -49,7 +49,7 @@ impl CardNode {
 }
 
 pub struct OrgChart {
-    root: Option<Rc<CardNode>>,
+    root: Option<CardNode>,
     previous_card: RefCell<Weak<CardNode>>,
     card_map: HashMap<i64, Rc<CardNode>>,
     card_list: RefCell<Vec<Rc<CardNode>>>,
@@ -81,8 +81,21 @@ impl OrgChart {
         line_width: f32,
         batch_column_capacity: i64,
     ) -> OrgChart {
+        // process the fixed size type
+        let mut fixed_overall_width = 0.0;
+        let mut fixed_overall_height = 0.0;
+        if fixed_size {
+            fixed_overall_width = fixed_width + horizon_gap;
+            fixed_overall_height = fixed_height + vertical_gap;
+        }
+
+        // create the root node
+        let root_data = &card_raw_list[0];
+        let mut root = CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL);
+        root.pos_y = 0.0;
+
         OrgChart {
-            root: None,
+            root: Some(root),
             previous_card: RefCell::new(Weak::new()),
             card_map: HashMap::new(),
             card_list: RefCell::new(vec![]),
@@ -94,8 +107,8 @@ impl OrgChart {
             fixed_height,
             lite_width,
             lite_height,
-            fixed_overall_width: 0.0,
-            fixed_overall_height: 0.0,
+            fixed_overall_width,
+            fixed_overall_height,
             horizon_gap,
             vertical_gap,
             batch_column_capacity,
