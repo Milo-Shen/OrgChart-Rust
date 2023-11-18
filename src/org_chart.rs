@@ -94,7 +94,7 @@ impl OrgChart {
         let root = Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL)));
         root.borrow_mut().pos_y = 0.0;
 
-        let mut org_chart = OrgChart {
+        OrgChart {
             root: Some(Rc::clone(&root)),
             previous_card: RefCell::new(Weak::new()),
             card_map: HashMap::new(),
@@ -112,23 +112,25 @@ impl OrgChart {
             horizon_gap,
             vertical_gap,
             batch_column_capacity,
-        };
-
-        org_chart.initialize_fixed_width_height_of_a_node(Rc::clone(&root));
-
-        // initial the card map
-        org_chart.card_map.insert(root.borrow().id, Rc::clone(&root));
-
-        // generate card node from raw data
-
-        return org_chart;
+        }
     }
 
-    fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {
+    pub fn initialization(&mut self) {
+        self.initialize_fixed_width_height_of_a_node();
+
+        // initial the card map
+        let root = self.root.clone().unwrap();
+        self.card_map.insert(root.borrow().id, Rc::clone(&root));
+
+        // generate card node from raw data
+    }
+
+    fn initialize_fixed_width_height_of_a_node(&self) {
         // process the fixed size type
         if self.fixed_size {
-            card_node.borrow_mut().width = self.fixed_width;
-            card_node.borrow_mut().height = self.fixed_height;
+            let root = self.root.clone().unwrap();
+            root.borrow_mut().width = self.fixed_width;
+            root.borrow_mut().height = self.fixed_height;
         }
     }
 
