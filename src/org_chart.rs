@@ -109,11 +109,10 @@ impl OrgChart {
         }
     }
 
-    pub fn initialization(&mut self, card_raw_list: Vec<Rc<RefCell<MockChartData>>>) {
-        // create the root node
+    pub fn initialization(&mut self, card_raw_list: Vec<MockChartData>) {
+        // initial the root node
         let root_data = &card_raw_list[0];
-        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL))));
-
+        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 200.0, 100.0, CardNodeType::NORMAL))));
         self.initialize_fixed_width_height_of_a_node();
 
         // initial the card map
@@ -133,7 +132,7 @@ impl OrgChart {
         }
     }
 
-    fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<Rc<RefCell<MockChartData>>>) {
+    fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<MockChartData>) {
         let card_list_len = card_raw_list.len();
 
         // build card node map
