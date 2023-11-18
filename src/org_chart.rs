@@ -1,5 +1,5 @@
 // use std
-use std::cell::{Ref, RefCell};
+use std::cell::{RefCell};
 use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
@@ -119,14 +119,48 @@ impl OrgChart {
         // initial the card map
         org_chart.card_map.insert(root.borrow().id, Rc::clone(&root));
 
+        // generate card node from raw data
+
         return org_chart;
     }
 
-    pub fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {
+    fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {
         // process the fixed size type
         if self.fixed_size {
             card_node.borrow_mut().width = self.fixed_width;
             card_node.borrow_mut().height = self.fixed_height;
+        }
+    }
+
+    fn initialize_tree_from_raw_data(card_raw_list: &Vec<Rc<RefCell<MockChartData>>>) {}
+
+    fn link_level_prev_card_and_build_card_list(&self) {
+        let mut queue = VecDeque::from([self.root.clone().unwrap()]);
+
+        // the current level of card node
+        let mut level = 0;
+
+        while !queue.is_empty() {
+            let len = queue.len();
+            let mut pre_level_card: Weak<CardNode> = Weak::new();
+            level += 1;
+
+            let level_first = queue.front();
+
+            for _ in 0..len {
+                let card = queue.pop_front().unwrap();
+
+                let card_parent_option = card.borrow().parent.borrow().upgrade();
+                if card_parent_option.is_some() {
+                    let card_parent = card_parent_option.unwrap();
+                    card.borrow_mut().pos_y = card_parent.pos_y + card_parent.height + self.vertical_gap;
+                } else {
+                    card.borrow_mut().pos_y = 0.0;
+                }
+
+                // link the level previous card node to the current node
+                *card.borrow_mut().level_previous.borrow_mut() = Weak::clone(&pre_level_card);
+            }
         }
     }
 }

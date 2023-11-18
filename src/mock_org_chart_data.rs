@@ -66,7 +66,7 @@ pub fn mock_org_chart_data(
             child_count = range(0, child_count)
         }
 
-        for i in 0..child_count {
+        for _ in 0..child_count {
             remain_count -= 1;
 
             let card = Rc::new(RefCell::new(build_card(&mut generate_id)));
