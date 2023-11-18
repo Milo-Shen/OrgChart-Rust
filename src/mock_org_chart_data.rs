@@ -53,7 +53,7 @@ pub fn mock_org_chart_data(
     // build the root leaf
     let root = Rc::new(RefCell::new(build_card(&mut generate_id)));
 
-    result.push(root.borrow().clone());
+    result.push(Rc::clone(&root));
     queue.push_back(Rc::clone(&root));
 
     while !queue.is_empty() {
@@ -72,15 +72,15 @@ pub fn mock_org_chart_data(
             let card = Rc::new(RefCell::new(build_card(&mut generate_id)));
             children.push(card.borrow().id);
             queue.push_back(Rc::clone(&card));
-            result.push(card.borrow().clone());
+            result.push(Rc::clone(&card));
         }
 
         node.borrow_mut().children = children;
 
         if remain_count <= 0 {
-            return result;
+            return result.iter().map(|x| x.borrow().clone()).collect();
         }
     }
 
-    result
+    result.iter().map(|x| x.borrow().clone()).collect()
 }
