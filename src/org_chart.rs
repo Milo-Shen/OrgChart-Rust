@@ -51,7 +51,7 @@ impl CardNode {
 pub struct OrgChart {
     root: Option<Rc<RefCell<CardNode>>>,
     previous_card: RefCell<Weak<CardNode>>,
-    card_map: HashMap<i64, Rc<CardNode>>,
+    card_map: HashMap<i64, Rc<RefCell<CardNode>>>,
     card_list: RefCell<Vec<Rc<CardNode>>>,
     card_linked_list: RefCell<VecDeque<Rc<CardNode>>>,
     line_list: RefCell<Vec<LineNode>>,
@@ -94,7 +94,7 @@ impl OrgChart {
         let root = Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL)));
         root.borrow_mut().pos_y = 0.0;
 
-        let org_chart = OrgChart {
+        let mut org_chart = OrgChart {
             root: Some(Rc::clone(&root)),
             previous_card: RefCell::new(Weak::new()),
             card_map: HashMap::new(),
@@ -115,6 +115,9 @@ impl OrgChart {
         };
 
         org_chart.initialize_fixed_width_height_of_a_node(Rc::clone(&root));
+
+        // initial the card map
+        org_chart.card_map.insert(root.borrow().id, Rc::clone(&root));
 
         return org_chart;
     }
