@@ -70,7 +70,6 @@ pub struct OrgChart {
 
 impl OrgChart {
     pub fn new(
-        card_raw_list: Vec<Rc<RefCell<MockChartData>>>,
         fixed_size: bool,
         fixed_width: f32,
         fixed_height: f32,
@@ -89,13 +88,8 @@ impl OrgChart {
             fixed_overall_height = fixed_height + vertical_gap;
         }
 
-        // create the root node
-        let root_data = &card_raw_list[0];
-        let root = Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL)));
-        root.borrow_mut().pos_y = 0.0;
-
         OrgChart {
-            root: Some(Rc::clone(&root)),
+            root: None,
             previous_card: RefCell::new(Weak::new()),
             card_map: HashMap::new(),
             card_list: RefCell::new(vec![]),
@@ -115,7 +109,11 @@ impl OrgChart {
         }
     }
 
-    pub fn initialization(&mut self) {
+    pub fn initialization(&mut self, card_raw_list: Vec<Rc<RefCell<MockChartData>>>) {
+        // create the root node
+        let root_data = &card_raw_list[0];
+        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL))));
+
         self.initialize_fixed_width_height_of_a_node();
 
         // initial the card map
@@ -123,6 +121,7 @@ impl OrgChart {
         self.card_map.insert(root.borrow().id, Rc::clone(&root));
 
         // generate card node from raw data
+        self.initialize_tree_from_raw_data(&card_raw_list);
     }
 
     fn initialize_fixed_width_height_of_a_node(&self) {
@@ -134,7 +133,12 @@ impl OrgChart {
         }
     }
 
-    fn initialize_tree_from_raw_data(card_raw_list: &Vec<Rc<RefCell<MockChartData>>>) {}
+    fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<Rc<RefCell<MockChartData>>>) {
+        let card_list_len = card_raw_list.len();
+
+        // build card node map
+        for i in card_raw_list {}
+    }
 
     fn link_level_prev_card_and_build_card_list(&self) {
         let mut queue = VecDeque::from([self.root.clone().unwrap()]);
