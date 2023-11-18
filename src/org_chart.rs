@@ -1,5 +1,5 @@
 // use std
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell};
 use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
@@ -49,7 +49,7 @@ impl CardNode {
 }
 
 pub struct OrgChart {
-    root: Option<CardNode>,
+    root: Option<Rc<RefCell<CardNode>>>,
     previous_card: RefCell<Weak<CardNode>>,
     card_map: HashMap<i64, Rc<CardNode>>,
     card_list: RefCell<Vec<Rc<CardNode>>>,
@@ -91,11 +91,11 @@ impl OrgChart {
 
         // create the root node
         let root_data = &card_raw_list[0];
-        let mut root = CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL);
-        root.pos_y = 0.0;
+        let root = Rc::new(RefCell::new(CardNode::new(root_data.borrow().id, 200.0, 100.0, CardNodeType::NORMAL)));
+        root.borrow_mut().pos_y = 0.0;
 
-        OrgChart {
-            root: Some(root),
+        let org_chart = OrgChart {
+            root: Some(Rc::clone(&root)),
             previous_card: RefCell::new(Weak::new()),
             card_map: HashMap::new(),
             card_list: RefCell::new(vec![]),
@@ -112,6 +112,12 @@ impl OrgChart {
             horizon_gap,
             vertical_gap,
             batch_column_capacity,
-        }
+        };
+
+        org_chart.initialize_fixed_width_height_of_a_node(Rc::clone(&root));
+
+        return org_chart;
     }
+
+    pub fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {}
 }
