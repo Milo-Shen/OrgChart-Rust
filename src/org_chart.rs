@@ -119,5 +119,11 @@ impl OrgChart {
         return org_chart;
     }
 
-    pub fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {}
+    pub fn initialize_fixed_width_height_of_a_node(&self, card_node: Rc<RefCell<CardNode>>) {
+        // process the fixed size type
+        if self.fixed_size {
+            card_node.borrow_mut().width = self.fixed_width;
+            card_node.borrow_mut().height = self.fixed_height;
+        }
+    }
 }
