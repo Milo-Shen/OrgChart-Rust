@@ -50,11 +50,11 @@ impl CardNode {
 
 pub struct OrgChart {
     root: Option<Rc<RefCell<CardNode>>>,
-    previous_card: RefCell<Weak<CardNode>>,
+    previous_card: Weak<CardNode>,
     card_map: HashMap<i64, Rc<RefCell<CardNode>>>,
-    card_list: RefCell<Vec<Rc<CardNode>>>,
-    card_linked_list: RefCell<VecDeque<Rc<CardNode>>>,
-    line_list: RefCell<Vec<LineNode>>,
+    card_list: Vec<Rc<CardNode>>,
+    card_linked_list: VecDeque<Rc<CardNode>>,
+    line_list: Vec<LineNode>,
     line_width: f32,
     fixed_size: bool,
     fixed_width: f32,
@@ -90,11 +90,11 @@ impl OrgChart {
 
         OrgChart {
             root: None,
-            previous_card: RefCell::new(Weak::new()),
+            previous_card: Weak::new(),
             card_map: HashMap::new(),
-            card_list: RefCell::new(vec![]),
-            card_linked_list: RefCell::new(VecDeque::new()),
-            line_list: RefCell::new(vec![]),
+            card_list: Vec::new(),
+            card_linked_list: VecDeque::new(),
+            line_list: Vec::new(),
             line_width,
             fixed_size,
             fixed_width,
@@ -149,7 +149,7 @@ impl OrgChart {
         for card_raw in card_raw_list {
             let MockChartData { id, children } = card_raw;
             let card = self.card_map.get(id).unwrap();
-            let previous_card;
+            // let previous_card;
 
             for card_id in children {
                 let child = self.card_map.get(card_id).unwrap();
