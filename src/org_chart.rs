@@ -137,12 +137,24 @@ impl OrgChart {
 
         // build card node map
         for card_raw in card_raw_list {
-            let MockChartData { id, children } = card_raw;
+            let MockChartData { id, .. } = card_raw;
             let new_card = Rc::new(RefCell::new(CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL)));
 
             // process the fixed size type
             self.initialize_fixed_width_height_of_a_node(&new_card);
             self.card_map.insert(*id, new_card);
+        }
+
+        // establish relationship between nodes
+        for card_raw in card_raw_list {
+            let MockChartData { id, children } = card_raw;
+            let card = self.card_map.get(id).unwrap();
+            let previous_card;
+
+            for card_id in children {
+                let child = self.card_map.get(card_id).unwrap();
+                // child.borrow_mut().parent.borrow_mut() =
+            }
         }
     }
 
