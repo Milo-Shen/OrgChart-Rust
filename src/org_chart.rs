@@ -16,9 +16,9 @@ pub enum CardNodeType {
 
 pub struct CardNode {
     id: i64,
-    children: Vec<Rc<CardNode>>,
-    parent: Weak<CardNode>,
-    previous: Weak<CardNode>,
+    children: Vec<Rc<RefCell<CardNode>>>,
+    parent: Weak<RefCell<CardNode>>,
+    previous: Weak<RefCell<CardNode>>,
     level: i64,
     level_previous: Weak<CardNode>,
     level_first: Weak<CardNode>,
@@ -149,11 +149,14 @@ impl OrgChart {
         for card_raw in card_raw_list {
             let MockChartData { id, children } = card_raw;
             let card = self.card_map.get(id).unwrap();
-            // let previous_card;
+            let mut previous_card = Weak::new();
 
             for card_id in children {
                 let child = self.card_map.get(card_id).unwrap();
-                // child.borrow_mut().parent.borrow_mut() =
+                child.borrow_mut().parent = Rc::downgrade(card);
+                child.borrow_mut().previous = Weak::clone(&previous_card);
+                previous_card = Rc::downgrade(child);
+                card.borrow_mut().children.push(Rc::clone(child));
             }
         }
     }
