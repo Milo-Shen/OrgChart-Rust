@@ -113,7 +113,7 @@ impl OrgChart {
         // initial the root node
         let root_data = &card_raw_list[0];
         self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 200.0, 100.0, CardNodeType::NORMAL))));
-        self.initialize_fixed_width_height_of_a_node();
+        self.initialize_fixed_width_height_of_a_node(self.root.clone().unwrap());
 
         // initial the card map
         let root = self.root.clone().unwrap();
@@ -123,7 +123,7 @@ impl OrgChart {
         self.initialize_tree_from_raw_data(&card_raw_list);
     }
 
-    fn initialize_fixed_width_height_of_a_node(&self) {
+    fn initialize_fixed_width_height_of_a_node(&self, node: &Rc<RefCell<CardNode>>) {
         // process the fixed size type
         if self.fixed_size {
             let root = self.root.clone().unwrap();
@@ -136,7 +136,13 @@ impl OrgChart {
         let card_list_len = card_raw_list.len();
 
         // build card node map
-        for i in card_raw_list {}
+        for card_raw in card_raw_list {
+            let MockChartData { id, children } = card_raw;
+            let new_card = CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL);
+
+            // process the fixed size type
+            // self.initialize_fixed_width_height_of_a_node(new_card);
+        }
     }
 
     fn link_level_prev_card_and_build_card_list(&self) {
