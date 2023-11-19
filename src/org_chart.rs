@@ -16,12 +16,12 @@ pub enum CardNodeType {
 
 pub struct CardNode {
     id: i64,
-    children: RefCell<Vec<Rc<CardNode>>>,
-    parent: RefCell<Weak<CardNode>>,
-    previous: RefCell<Weak<CardNode>>,
+    children: Vec<Rc<CardNode>>,
+    parent: Weak<CardNode>,
+    previous: Weak<CardNode>,
     level: i64,
-    level_previous: RefCell<Weak<CardNode>>,
-    level_first: RefCell<Weak<CardNode>>,
+    level_previous: Weak<CardNode>,
+    level_first: Weak<CardNode>,
     width: f32,
     height: f32,
     pos_x: f32,
@@ -33,12 +33,12 @@ impl CardNode {
     pub fn new(id: i64, w: f32, h: f32, mode: CardNodeType) -> CardNode {
         CardNode {
             id,
-            children: RefCell::new(vec![]),
-            parent: RefCell::new(Weak::new()),
-            previous: RefCell::new(Weak::new()),
+            children: Vec::new(),
+            parent: Weak::new(),
+            previous: Weak::new(),
             level: 0,
-            level_previous: RefCell::new(Weak::new()),
-            level_first: RefCell::new(Weak::new()),
+            level_previous: Weak::new(),
+            level_first: Weak::new(),
             width: w,
             height: h,
             pos_x: f32::MIN,
@@ -158,33 +158,33 @@ impl OrgChart {
         }
     }
 
-    fn link_level_prev_card_and_build_card_list(&self) {
-        let mut queue = VecDeque::from([self.root.clone().unwrap()]);
-
-        // the current level of card node
-        let mut level = 0;
-
-        while !queue.is_empty() {
-            let len = queue.len();
-            let mut pre_level_card: Weak<CardNode> = Weak::new();
-            level += 1;
-
-            let level_first = queue.front();
-
-            for _ in 0..len {
-                let card = queue.pop_front().unwrap();
-
-                let card_parent_option = card.borrow().parent.borrow().upgrade();
-                if card_parent_option.is_some() {
-                    let card_parent = card_parent_option.unwrap();
-                    card.borrow_mut().pos_y = card_parent.pos_y + card_parent.height + self.vertical_gap;
-                } else {
-                    card.borrow_mut().pos_y = 0.0;
-                }
-
-                // link the level previous card node to the current node
-                *card.borrow_mut().level_previous.borrow_mut() = Weak::clone(&pre_level_card);
-            }
-        }
-    }
+    // fn link_level_prev_card_and_build_card_list(&self) {
+    //     let mut queue = VecDeque::from([self.root.clone().unwrap()]);
+    //
+    //     // the current level of card node
+    //     let mut level = 0;
+    //
+    //     while !queue.is_empty() {
+    //         let len = queue.len();
+    //         let mut pre_level_card: Weak<CardNode> = Weak::new();
+    //         level += 1;
+    //
+    //         let level_first = queue.front();
+    //
+    //         for _ in 0..len {
+    //             let card = queue.pop_front().unwrap();
+    //
+    //             let card_parent_option = card.borrow().parent.borrow().upgrade();
+    //             if card_parent_option.is_some() {
+    //                 let card_parent = card_parent_option.unwrap();
+    //                 card.borrow_mut().pos_y = card_parent.pos_y + card_parent.height + self.vertical_gap;
+    //             } else {
+    //                 card.borrow_mut().pos_y = 0.0;
+    //             }
+    //
+    //             // link the level previous card node to the current node
+    //             *card.borrow_mut().level_previous.borrow_mut() = Weak::clone(&pre_level_card);
+    //         }
+    //     }
+    // }
 }
