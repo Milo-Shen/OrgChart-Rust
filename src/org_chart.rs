@@ -113,7 +113,7 @@ impl OrgChart {
         // initial the root node
         let root_data = &card_raw_list[0];
         self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 200.0, 100.0, CardNodeType::NORMAL))));
-        self.initialize_fixed_width_height_of_a_node(self.root.clone().unwrap());
+        self.initialize_fixed_width_height_of_a_node(&self.root.clone().unwrap());
 
         // initial the card map
         let root = self.root.clone().unwrap();
@@ -127,8 +127,8 @@ impl OrgChart {
         // process the fixed size type
         if self.fixed_size {
             let root = self.root.clone().unwrap();
-            root.borrow_mut().width = self.fixed_width;
-            root.borrow_mut().height = self.fixed_height;
+            node.borrow_mut().width = self.fixed_width;
+            node.borrow_mut().height = self.fixed_height;
         }
     }
 
@@ -138,10 +138,11 @@ impl OrgChart {
         // build card node map
         for card_raw in card_raw_list {
             let MockChartData { id, children } = card_raw;
-            let new_card = CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL);
+            let new_card = Rc::new(RefCell::new(CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL)));
 
             // process the fixed size type
-            // self.initialize_fixed_width_height_of_a_node(new_card);
+            self.initialize_fixed_width_height_of_a_node(&new_card);
+            self.card_map.insert(*id, new_card);
         }
     }
 
