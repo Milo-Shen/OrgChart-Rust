@@ -176,7 +176,7 @@ impl OrgChart {
             let mut pre_level_card: Weak<RefCell<CardNode>> = Weak::new();
             level += 1;
 
-            let level_first = queue.front().unwrap();
+            let level_first = Rc::clone(queue.front().unwrap());
 
             for _ in 0..len {
                 let card = queue.pop_front().unwrap();
@@ -192,7 +192,7 @@ impl OrgChart {
                 // link the level previous card node to the current node
                 card.borrow_mut().level_previous = pre_level_card;
                 card.borrow_mut().level = level;
-                card.borrow_mut().level_first = Rc::downgrade(level_first);
+                card.borrow_mut().level_first = Rc::downgrade(&level_first);
                 pre_level_card = Rc::downgrade(&card);
 
                 // build card_list
