@@ -50,7 +50,7 @@ impl CardNode {
 
 pub struct OrgChart {
     root: Option<Rc<RefCell<CardNode>>>,
-    previous_card: Weak<CardNode>,
+    previous_card: Weak<RefCell<CardNode>>,
     card_map: HashMap<i64, Rc<RefCell<CardNode>>>,
     card_list: Vec<Rc<RefCell<CardNode>>>,
     line_list: Vec<LineNode>,
@@ -122,6 +122,9 @@ impl OrgChart {
 
         // build the level previous relationship
         self.link_level_prev_card_and_build_card_list();
+
+        // generate the horizon x position and lines
+        self.generate_horizon_pos_and_lines();
     }
 
     fn initialize_fixed_width_height_of_a_node(&self, node: &Rc<RefCell<CardNode>>) {
@@ -196,5 +199,22 @@ impl OrgChart {
                 self.card_list.push(card);
             }
         }
+    }
+
+    fn generate_horizon_pos_and_lines(&mut self) {
+        if self.root.is_none() {
+            return;
+        }
+
+        // update the horizon space for each node
+        self.update_node_horizon_space();
+
+        // todo: update the vertical space for each node
+
+        // calculate the line pos
+    }
+
+    fn update_node_horizon_space(&mut self) {
+        self.previous_card = Weak::new();
     }
 }
