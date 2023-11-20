@@ -53,8 +53,6 @@ pub struct OrgChart {
     previous_card: Weak<CardNode>,
     card_map: HashMap<i64, Rc<RefCell<CardNode>>>,
     card_list: Vec<Rc<RefCell<CardNode>>>,
-    // todo: card_linked_list 暂时不使用
-    card_linked_list: VecDeque<Rc<CardNode>>,
     line_list: Vec<LineNode>,
     line_width: f32,
     fixed_size: bool,
@@ -94,7 +92,6 @@ impl OrgChart {
             previous_card: Weak::new(),
             card_map: HashMap::new(),
             card_list: Vec::new(),
-            card_linked_list: VecDeque::new(),
             line_list: Vec::new(),
             line_width,
             fixed_size,
@@ -197,7 +194,6 @@ impl OrgChart {
 
                 // build card_list
                 self.card_list.push(card);
-                // self.card_linked_list
             }
         }
     }
