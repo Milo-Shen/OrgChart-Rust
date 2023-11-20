@@ -15,18 +15,18 @@ pub enum CardNodeType {
 }
 
 pub struct CardNode {
-    id: i64,
-    children: Vec<Rc<RefCell<CardNode>>>,
-    parent: Weak<RefCell<CardNode>>,
-    previous: Weak<RefCell<CardNode>>,
-    level: i64,
-    level_previous: Weak<RefCell<CardNode>>,
-    level_first: Weak<RefCell<CardNode>>,
-    width: f32,
-    height: f32,
-    pos_x: f32,
-    pos_y: f32,
-    mode: CardNodeType,
+    pub id: i64,
+    pub children: Vec<Rc<RefCell<CardNode>>>,
+    pub parent: Weak<RefCell<CardNode>>,
+    pub previous: Weak<RefCell<CardNode>>,
+    pub level: i64,
+    pub level_previous: Weak<RefCell<CardNode>>,
+    pub level_first: Weak<RefCell<CardNode>>,
+    pub width: f32,
+    pub height: f32,
+    pub pos_x: f32,
+    pub pos_y: f32,
+    pub mode: CardNodeType,
 }
 
 impl CardNode {
