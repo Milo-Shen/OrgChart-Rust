@@ -130,11 +130,13 @@ impl OrgChart {
 
     fn initialize_fixed_width_height_of_a_node(&self, node: &Rc<RefCell<CardNode>>) {
         // process the fixed size type
-        if self.fixed_size {
-            let root = self.root.clone().unwrap();
-            node.borrow_mut().width = self.fixed_width;
-            node.borrow_mut().height = self.fixed_height;
+        if !self.fixed_size {
+            return;
         }
+
+        let root = self.root.clone().unwrap();
+        node.borrow_mut().width = self.fixed_width;
+        node.borrow_mut().height = self.fixed_height;
     }
 
     fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<MockChartData>) {
