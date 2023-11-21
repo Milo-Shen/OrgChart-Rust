@@ -274,7 +274,24 @@ impl OrgChart {
         }
     }
 
-    fn update_node_horizon_space_sibling_nodes(&mut self, root: Rc<RefCell<CardNode>>) {}
+    fn update_node_horizon_space_sibling_nodes(&mut self, node: Rc<RefCell<CardNode>>) {
+        // sibling node
+        let previous_opt = node.borrow().previous.upgrade();
+        let previous_card_opt = self.previous_card.upgrade();
+        if previous_opt.is_none() || previous_card_opt.is_none() {
+            return;
+        }
+
+        let previous = previous_opt.unwrap();
+        let previous_card = previous_card_opt.unwrap();
+
+        if previous.borrow().id != previous_card.borrow().id {
+            return;
+        }
+
+        node.borrow_mut().pos_x = previous.borrow().pos_x + previous.borrow().width + self.horizon_gap;
+        self.previous_card = Rc::downgrade(&node);
+    }
 
     fn update_node_horizon_space_parent_node(&mut self, root: Rc<RefCell<CardNode>>) {}
 }
