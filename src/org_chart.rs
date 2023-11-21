@@ -220,7 +220,7 @@ impl OrgChart {
 
         traverse_tree_by_dfs(self.root.clone(), |node| {
             // most left node of each subtree
-            // self.update_node_horizon_space_most_left_leaf(node);
+            self.update_node_horizon_space_most_left_leaf(node);
         })
     }
 
