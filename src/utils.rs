@@ -31,3 +31,7 @@ pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback
         pre = node;
     }
 }
+
+pub fn is_leaf(node: &Rc<RefCell<CardNode>>) -> bool {
+    node.borrow().children.is_empty()
+}

@@ -6,7 +6,7 @@ use std::rc::{Rc, Weak};
 //  use local types
 use crate::line::LineNode;
 use crate::mock_org_chart_data::MockChartData;
-use crate::utils::traverse_tree_by_dfs;
+use crate::utils::{is_leaf, traverse_tree_by_dfs};
 
 pub enum CardNodeType {
     NORMAL,
@@ -224,5 +224,21 @@ impl OrgChart {
         })
     }
 
-    fn update_node_horizon_space_most_left_leaf(&mut self, root: Rc<RefCell<CardNode>>) {}
+    fn update_node_horizon_space_most_left_leaf(&mut self, node: Rc<RefCell<CardNode>>) {
+        // most left node of each subtree
+        if is_leaf(&node) && node.borrow().previous.upgrade().is_none() {
+            let level_previous_option = node.borrow().level_previous.upgrade();
+            if level_previous_option.is_some() {
+                let level_previous = level_previous_option.unwrap();
+                node.borrow_mut().pos_x = level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
+            } else {
+                node.borrow_mut().pos_x = 0.0;
+            }
+
+            self.readjust_horizon_pos_of_subtree(Rc::clone(&node));
+            self.previous_card = Rc::downgrade(&node);
+        }
+    }
+
+    fn readjust_horizon_pos_of_subtree(&mut self, node: Rc<RefCell<CardNode>>) {}
 }
