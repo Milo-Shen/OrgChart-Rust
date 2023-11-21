@@ -250,7 +250,7 @@ impl OrgChart {
         self.previous_card = Rc::downgrade(&node);
     }
 
-    fn readjust_horizon_pos_of_subtree(&mut self, root: Rc<RefCell<CardNode>>) {
+    fn readjust_horizon_pos_of_subtree(&self, root: Rc<RefCell<CardNode>>) {
         let level_previous_option = root.borrow().level_previous.upgrade();
         if level_previous_option.is_none() {
             return;
