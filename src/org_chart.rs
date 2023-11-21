@@ -293,5 +293,13 @@ impl OrgChart {
         self.previous_card = Rc::downgrade(&node);
     }
 
-    fn update_node_horizon_space_parent_node(&mut self, root: Rc<RefCell<CardNode>>) {}
+    fn update_node_horizon_space_parent_node(&mut self, root: Rc<RefCell<CardNode>>) {
+        if self.previous_card.upgrade().is_none() {
+            return;
+        }
+
+        if self.previous_card.upgrade().unwrap().borrow().parent.upgrade().is_none() {
+            return;
+        }
+    }
 }
