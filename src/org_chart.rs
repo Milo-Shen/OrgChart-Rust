@@ -222,7 +222,13 @@ impl OrgChart {
 
         traverse_tree_by_dfs(self.root.clone(), |node| {
             // most left node of each subtree
-            self.update_node_horizon_space_most_left_leaf(node);
+            self.update_node_horizon_space_most_left_leaf(Rc::clone(&node));
+
+            // sibling node
+            self.update_node_horizon_space_sibling_nodes(Rc::clone(&node));
+
+            // go to the parent node
+            self.update_node_horizon_space_parent_node(Rc::clone(&node));
         })
     }
 
@@ -267,4 +273,8 @@ impl OrgChart {
             }
         }
     }
+
+    fn update_node_horizon_space_sibling_nodes(&mut self, root: Rc<RefCell<CardNode>>) {}
+
+    fn update_node_horizon_space_parent_node(&mut self, root: Rc<RefCell<CardNode>>) {}
 }
