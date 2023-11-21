@@ -6,7 +6,9 @@ use std::rc::{Rc};
 //  use local types
 use crate::org_chart::CardNode;
 
-pub fn traverse_tree_by_dfs(root: Option<Rc<RefCell<CardNode>>>, callback: fn(Rc<RefCell<CardNode>>) -> !) {
+pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, callback: F)
+    where F: Fn(Rc<RefCell<CardNode>>) -> ()
+{
     if root.is_none() {
         return;
     }
