@@ -240,19 +240,27 @@ impl OrgChart {
         }
     }
 
-    fn readjust_horizon_pos_of_subtree(&mut self, node: Rc<RefCell<CardNode>>) {
-        let level_previous_option = node.borrow().level_previous.upgrade();
+    fn readjust_horizon_pos_of_subtree(&mut self, root: Rc<RefCell<CardNode>>) {
+        let level_previous_option = root.borrow().level_previous.upgrade();
         if level_previous_option.is_none() {
             return;
         }
 
         let level_previous = level_previous_option.unwrap();
         let min_pos = level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
-        if min_pos < node.borrow().pos_x {
+        if min_pos < root.borrow().pos_x {
             return;
         }
 
-        let diff = min_pos - node.borrow().pos_x;
-        let queue = VecDeque::from([Rc::clone(&node)]);
+        let diff = min_pos - root.borrow().pos_x;
+        let mut queue = VecDeque::from([Rc::clone(&root)]);
+
+        while !queue.is_empty() {
+            let node = queue.pop_front().unwrap();
+            node.borrow_mut().pos_x = node.borrow().pos_x + diff;
+            for child in &node.borrow().children {
+                queue.push_back(Rc::clone(child));
+            }
+        }
     }
 }
