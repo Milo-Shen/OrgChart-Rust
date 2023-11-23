@@ -335,7 +335,12 @@ impl OrgChart {
             let children_len = node.borrow().children.len();
 
             // case one: one parent has one child
-            if children_len == 1 {}
+            if children_len == 1 {
+                let x = node.borrow().pos_x + (node.borrow().width - self.line_width) / 2.0;
+                let y = node.borrow().pos_y + node.borrow().height;
+                let w = self.line_width;
+                let h = self.vertical_gap;
+            }
         })
     }
 }
