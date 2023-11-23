@@ -6,7 +6,7 @@ use std::rc::{Rc, Weak};
 //  use local types
 use crate::line::LineNode;
 use crate::mock_org_chart_data::MockChartData;
-use crate::utils::{is_leaf, traverse_tree_by_dfs};
+use crate::utils::{is_even, is_leaf, traverse_tree_by_dfs};
 
 pub enum CardNodeType {
     NORMAL,
@@ -312,6 +312,17 @@ impl OrgChart {
             // todo: performance optimization -> readjust_horizon_pos_of_subtree ?
             // if the parent only has one child, the pos_x of the parent node will as same as the child
             node.borrow_mut().pos_x = self.previous_card.upgrade().unwrap().borrow().pos_x;
+            // odd number case
+        } else if !is_even(node_children_len) {
+            let mid_pos = node_children_len / 2;
+            node.borrow_mut().pos_x = node.borrow().children[mid_pos].borrow().pos_x;
+        } else {
+            let start = node.borrow().children[0].borrow().pos_x;
+            let end = node.borrow().children[node_children_len - 1].borrow().pos_x;
+            node.borrow_mut().pos_x = (start + end) / 2;
         }
+
+        self.readjust_horizon_pos_of_subtree(Rc::clone(&node));
+        self.previous_card = Rc::downgrade(&node);
     }
 }
