@@ -215,6 +215,7 @@ impl OrgChart {
         // todo: update the vertical space for each node
 
         // calculate the line pos
+        self.calculate_line_pos();
     }
 
     fn update_node_horizon_space(&mut self) {
@@ -319,10 +320,12 @@ impl OrgChart {
         } else {
             let start = node.borrow().children[0].borrow().pos_x;
             let end = node.borrow().children[node_children_len - 1].borrow().pos_x;
-            node.borrow_mut().pos_x = (start + end) / 2;
+            node.borrow_mut().pos_x = (start + end) / 2.0;
         }
 
         self.readjust_horizon_pos_of_subtree(Rc::clone(&node));
         self.previous_card = Rc::downgrade(&node);
     }
+
+    fn calculate_line_pos(&self) {}
 }

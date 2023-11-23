@@ -32,6 +32,21 @@ pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback
     }
 }
 
+pub fn traverse_tree_by_level<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback: F)
+    where F: FnMut(Rc<RefCell<CardNode>>) -> ()
+{
+    let mut queue = VecDeque::from([root.unwrap()]);
+
+    while !queue.is_empty() {
+        let card = queue.pop_front().unwrap();
+        callback(Rc::clone(&card));
+
+        for child in &card.borrow().children {
+            queue.push_back(Rc::clone(child));
+        }
+    }
+}
+
 pub fn is_leaf(node: &Rc<RefCell<CardNode>>) -> bool {
     node.borrow().children.is_empty()
 }
