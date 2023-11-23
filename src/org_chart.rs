@@ -140,8 +140,6 @@ impl OrgChart {
     }
 
     fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<MockChartData>) {
-        let card_list_len = card_raw_list.len();
-
         // build card node map
         for card_raw in card_raw_list {
             let MockChartData { id, .. } = card_raw;
@@ -327,5 +325,7 @@ impl OrgChart {
         self.previous_card = Rc::downgrade(&node);
     }
 
-    fn calculate_line_pos(&self) {}
+    fn calculate_line_pos(&mut self) {
+        traverse_tree_by_dfs(self.root.clone(), |node| {})
+    }
 }
