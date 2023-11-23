@@ -293,13 +293,27 @@ impl OrgChart {
         self.previous_card = Rc::downgrade(&node);
     }
 
-    fn update_node_horizon_space_parent_node(&mut self, root: Rc<RefCell<CardNode>>) {
-        if self.previous_card.upgrade().is_none() {
+    fn update_node_horizon_space_parent_node(&mut self, node: Rc<RefCell<CardNode>>) {
+        let previous_card_opt = self.previous_card.upgrade();
+
+        if previous_card_opt.is_none() {
             return;
         }
 
-        if self.previous_card.upgrade().unwrap().borrow().parent.upgrade().is_none() {
+        let previous_card_parent_opt = previous_card_opt.unwrap().borrow().parent.upgrade();
+        if previous_card_parent_opt.is_none() {
             return;
+        }
+
+        if previous_card_parent_opt.unwrap().borrow().id == node.borrow().id {
+            return;
+        }
+
+        let node_children_len = node.borrow().children.len();
+        if node_children_len == 1 {
+            // todo: performance optimization -> readjust_horizon_pos_of_subtree ?
+            // if the parent only has one child, the pos_x of the parent node will as same as the child
+            node.borrow_mut().pos_x = previous_card_opt.unwrap().borrow().pos_x;
         }
     }
 }
