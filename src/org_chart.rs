@@ -326,6 +326,16 @@ impl OrgChart {
     }
 
     fn calculate_line_pos(&mut self) {
-        traverse_tree_by_dfs(self.root.clone(), |node| {})
+        traverse_tree_by_dfs(self.root.clone(), |node| {
+            if is_leaf(&node) {
+                return;
+            }
+
+            // create line node
+            let children_len = node.borrow().children.len();
+
+            // case one: one parent has one child
+            if children_len == 1 {}
+        })
     }
 }
