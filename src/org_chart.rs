@@ -341,6 +341,9 @@ impl OrgChart {
                 let w = self.line_width;
                 let h = self.vertical_gap;
                 let line_node = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
+                self.line_list.push(line_node);
+            } else {
+                // case two: one parent has multi children
             }
         })
     }
