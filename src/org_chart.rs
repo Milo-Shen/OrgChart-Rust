@@ -4,7 +4,7 @@ use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
 //  use local types
-use crate::line::LineNode;
+use crate::line::{LineNode, LineType};
 use crate::mock_org_chart_data::MockChartData;
 use crate::utils::{is_even, is_leaf, traverse_tree_by_dfs};
 
@@ -340,6 +340,7 @@ impl OrgChart {
                 let y = node.borrow().pos_y + node.borrow().height;
                 let w = self.line_width;
                 let h = self.vertical_gap;
+                let line_node = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
             }
         })
     }

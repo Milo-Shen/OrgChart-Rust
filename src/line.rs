@@ -9,8 +9,6 @@ pub struct LineNode {
     width: f32,
     height: f32,
     border_width: f32,
-    border_radius: f32,
-    color: String,
     mode: LineType,
 }
 
@@ -21,9 +19,7 @@ impl LineNode {
         w: f32,
         h: f32,
         mode: LineType,
-        color: String,
         border_width: f32,
-        border_radius: f32,
     ) -> LineNode {
         LineNode {
             pos_x: x,
@@ -31,8 +27,6 @@ impl LineNode {
             width: w,
             height: h,
             border_width,
-            border_radius,
-            color,
             mode,
         }
     }
