@@ -332,20 +332,21 @@ impl OrgChart {
             }
 
             // create line node
-            let children_len = node.borrow().children.len();
+            let node_borrow = node.borrow();
+            let children_len = node_borrow.children.len();
 
             // case one: one parent has one child
             if children_len == 1 {
-                let x = node.borrow().pos_x + (node.borrow().width - self.line_width) / 2.0;
-                let y = node.borrow().pos_y + node.borrow().height;
+                let x = node_borrow.pos_x + (node_borrow.width - self.line_width) / 2.0;
+                let y = node_borrow.pos_y + node_borrow.height;
                 let w = self.line_width;
                 let h = self.vertical_gap;
                 let line_node = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
                 self.line_list.push(line_node);
             } else {
                 // case two: one parent has multi children
-                let first = Rc::clone(node.borrow().children.first().unwrap());
-                let last = Rc::clone(node.borrow().children.last().unwrap());
+                let first = Rc::clone(node_borrow.children.first().unwrap());
+                let last = Rc::clone(node_borrow.children.last().unwrap());
 
                 // get the mid pos of a card
                 let start = first.borrow().pos_x + (first.borrow().width - self.line_width) / 2.0;
@@ -360,15 +361,15 @@ impl OrgChart {
                 self.line_list.push(square_node);
 
                 // case three: parent to category line
-                let x = node.borrow().pos_x + (node.borrow().width - self.line_width) / 2.0;
-                let y = node.borrow().pos_y + node.borrow().height;
+                let x = node_borrow.pos_x + (node_borrow.width - self.line_width) / 2.0;
+                let y = node_borrow.pos_y + node_borrow.height;
                 let w = self.line_width;
                 let h = (self.vertical_gap - self.line_width) / 2.0;
                 let p_to_c_line = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
                 self.line_list.push(p_to_c_line);
 
                 // case four: parent to node line
-                for child in &node.borrow().children {
+                for child in &node_borrow.children {
                     let x = child.borrow().pos_x + (child.borrow().width - self.line_width) / 2.0;
                     let y = child.borrow().pos_y - (self.vertical_gap - self.line_width) / 2.0;
                     let w = self.line_width;
