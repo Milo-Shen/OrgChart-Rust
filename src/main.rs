@@ -7,7 +7,7 @@ mod utils;
 
 fn main() {
     let start_time = Instant::now();
-    let test = mock_org_chart_data::mock_org_chart_data(3000000, 20, false);
+    let test = mock_org_chart_data::mock_org_chart_data(300000, 20, false);
     let duration = start_time.elapsed();
     println!("{:?}", duration);
     println!("Hello, world!");
