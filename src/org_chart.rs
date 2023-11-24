@@ -344,6 +344,38 @@ impl OrgChart {
                 self.line_list.push(line_node);
             } else {
                 // case two: one parent has multi children
+                let first = Rc::clone(node.borrow().children.first().unwrap());
+                let last = Rc::clone(node.borrow().children.last().unwrap());
+
+                // get the mid pos of a card
+                let start = first.borrow().pos_x + (first.borrow().width - self.line_width) / 2.0;
+                let end = last.borrow().pos_x + (last.borrow().width - self.line_width) / 2.0;
+
+                // update line info
+                let x = start;
+                let h = (self.vertical_gap + self.line_width) / 2.0;
+                let y = first.borrow().pos_y - h;
+                let w = end - start;
+                let square_node = LineNode::new(x, y, w, h, LineType::Square, self.line_width);
+                self.line_list.push(square_node);
+
+                // case three: parent to category line
+                let x = node.borrow().pos_x + (node.borrow().width - self.line_width) / 2.0;
+                let y = node.borrow().pos_y + node.borrow().height;
+                let w = self.line_width;
+                let h = (self.vertical_gap - self.line_width) / 2.0;
+                let p_to_c_line = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
+                self.line_list.push(p_to_c_line);
+
+                // case four: parent to node line
+                for child in &node.borrow().children {
+                    let x = child.borrow().pos_x + (child.borrow().width - self.line_width) / 2.0;
+                    let y = child.borrow().pos_y - (self.vertical_gap - self.line_width) / 2.0;
+                    let w = self.line_width;
+                    let h = (self.vertical_gap + self.line_width) / 2.0;
+                    let p_to_n_line = LineNode::new(x, y, w, h, LineType::LINE, self.line_width);
+                    self.line_list.push(p_to_n_line);
+                }
             }
         })
     }
