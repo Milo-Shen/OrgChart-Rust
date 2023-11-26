@@ -20,6 +20,6 @@ fn main() {
     println!("build org chart time {:?}", duration);
     let data = chart.get_render_data();
     println!("{:#?}", data.0);
-    println!("{:#?}", chart.root.unwrap().borrow().children.len());
+    // println!("{:#?}", chart.root.unwrap());
     println!("Hello, world!");
 }

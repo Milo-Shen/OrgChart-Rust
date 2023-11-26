@@ -128,7 +128,7 @@ impl OrgChart {
         self.initialize_tree_from_raw_data(&card_raw_list);
 
         // build the level previous relationship
-        // self.link_level_prev_card_and_build_card_list();
+        self.link_level_prev_card_and_build_card_list();
 
         // generate the horizon x position and lines
         // self.generate_horizon_pos_and_lines();
@@ -206,7 +206,12 @@ impl OrgChart {
                 pre_level_card = Rc::downgrade(&card);
 
                 // build card_list
-                self.card_list.push(card);
+                self.card_list.push(Rc::clone(&card));
+
+                // loop the next level of nodes
+                for child in &card.borrow().children {
+                    queue.push_back(Rc::clone(child));
+                }
             }
         }
     }
