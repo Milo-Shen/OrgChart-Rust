@@ -388,5 +388,7 @@ impl OrgChart {
         })
     }
 
-    fn get_render_data() {}
+    fn get_render_data(&self) -> (&Vec<Rc<RefCell<CardNode>>>, &Vec<LineNode>) {
+        (&self.card_list, &self.line_list)
+    }
 }
