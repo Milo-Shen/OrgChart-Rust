@@ -8,6 +8,7 @@ use crate::line::{LineNode, LineType};
 use crate::mock_org_chart_data::MockChartData;
 use crate::utils::{is_even, is_leaf, traverse_tree_by_dfs};
 
+#[derive(Debug)]
 pub enum CardNodeType {
     NORMAL,
     LITE,
@@ -15,6 +16,7 @@ pub enum CardNodeType {
     EXTEND,
 }
 
+#[derive(Debug)]
 pub struct CardNode {
     pub id: i64,
     pub children: Vec<Rc<RefCell<CardNode>>>,
@@ -388,7 +390,7 @@ impl OrgChart {
         })
     }
 
-    fn get_render_data(&self) -> (&Vec<Rc<RefCell<CardNode>>>, &Vec<LineNode>) {
+    pub fn get_render_data(&self) -> (&Vec<Rc<RefCell<CardNode>>>, &Vec<LineNode>) {
         (&self.card_list, &self.line_list)
     }
 }

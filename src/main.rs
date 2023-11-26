@@ -18,5 +18,7 @@ fn main() {
     chart.initialization(mock_data);
     let duration = start_time.elapsed();
     println!("build org chart time {:?}", duration);
+    let data = chart.get_render_data();
+    println!("{:#?}", data.0);
     println!("Hello, world!");
 }
