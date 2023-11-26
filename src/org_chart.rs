@@ -307,19 +307,19 @@ impl OrgChart {
     }
 
     fn update_node_horizon_space_parent_node(&mut self, node: Rc<RefCell<CardNode>>) {
-        let node_borrow = node.borrow();
-        let previous_card = self.previous_card.upgrade().unwrap();
-
         if self.previous_card.upgrade().is_none() {
             return;
         }
+
+        let node_borrow = node.borrow();
+        let previous_card = self.previous_card.upgrade().unwrap();
 
         let previous_card_parent_opt = previous_card.borrow().parent.upgrade();
         if previous_card_parent_opt.is_none() {
             return;
         }
 
-        if previous_card_parent_opt.unwrap().borrow().id == node_borrow.id {
+        if previous_card_parent_opt.unwrap().borrow().id != node_borrow.id {
             return;
         }
 
