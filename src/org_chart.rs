@@ -52,7 +52,7 @@ impl CardNode {
 }
 
 pub struct OrgChart {
-    root: Option<Rc<RefCell<CardNode>>>,
+    pub root: Option<Rc<RefCell<CardNode>>>,
     previous_card: Weak<RefCell<CardNode>>,
     card_map: HashMap<i64, Rc<RefCell<CardNode>>>,
     card_list: Vec<Rc<RefCell<CardNode>>>,
@@ -128,10 +128,10 @@ impl OrgChart {
         self.initialize_tree_from_raw_data(&card_raw_list);
 
         // build the level previous relationship
-        self.link_level_prev_card_and_build_card_list();
+        // self.link_level_prev_card_and_build_card_list();
 
         // generate the horizon x position and lines
-        self.generate_horizon_pos_and_lines();
+        // self.generate_horizon_pos_and_lines();
     }
 
     fn initialize_fixed_width_height_of_a_node(&self, node: &Rc<RefCell<CardNode>>) {
@@ -147,7 +147,10 @@ impl OrgChart {
 
     fn initialize_tree_from_raw_data(&mut self, card_raw_list: &Vec<MockChartData>) {
         // build card node map
-        for card_raw in card_raw_list {
+        let card_raw_list_len = card_raw_list.len();
+
+        for i in 1..card_raw_list_len {
+            let card_raw = &card_raw_list[i];
             let MockChartData { id, .. } = card_raw;
             let new_card = Rc::new(RefCell::new(CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL)));
 
