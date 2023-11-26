@@ -9,11 +9,11 @@ fn main() {
     let start_time = Instant::now();
     let mock_data = mock_org_chart_data::mock_org_chart_data(300000, 20, false);
     let duration = start_time.elapsed();
-    println!("{:?}", duration);
+    println!("mock data: {:?}", duration);
     let start_time = Instant::now();
     let mut chart = org_chart::OrgChart::new(true, 200.0, 100.0, 100.0, 50.0, 10.0, 41.0, 2.0, 2);
     let duration = start_time.elapsed();
-    println!("{:?}", duration);
+    println!("init org chart: {:?}", duration);
     let start_time = Instant::now();
     chart.initialization(mock_data);
     let duration = start_time.elapsed();
