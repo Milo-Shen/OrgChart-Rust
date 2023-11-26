@@ -117,7 +117,7 @@ impl OrgChart {
 
         // initial the root node
         let root_data = &card_raw_list[0];
-        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 200.0, 100.0, CardNodeType::NORMAL))));
+        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 0.0, 0.0, CardNodeType::NORMAL))));
         self.initialize_fixed_width_height_of_a_node(&self.root.clone().unwrap());
 
         // initial the card map
