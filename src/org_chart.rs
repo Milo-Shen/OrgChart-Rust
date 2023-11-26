@@ -1,5 +1,5 @@
 // use std
-use std::cell::{RefCell};
+use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::rc::{Rc, Weak};
 
@@ -117,7 +117,12 @@ impl OrgChart {
 
         // initial the root node
         let root_data = &card_raw_list[0];
-        self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 0.0, 0.0, CardNodeType::NORMAL))));
+        self.root = Some(Rc::new(RefCell::new(CardNode::new(
+            root_data.id,
+            0.0,
+            0.0,
+            CardNodeType::NORMAL,
+        ))));
         self.initialize_fixed_width_height_of_a_node(&self.root.clone().unwrap());
 
         // initial the card map
@@ -152,7 +157,12 @@ impl OrgChart {
         for i in 1..card_raw_list_len {
             let card_raw = &card_raw_list[i];
             let MockChartData { id, .. } = card_raw;
-            let new_card = Rc::new(RefCell::new(CardNode::new(*id, 0.0, 0.0, CardNodeType::NORMAL)));
+            let new_card = Rc::new(RefCell::new(CardNode::new(
+                *id,
+                0.0,
+                0.0,
+                CardNodeType::NORMAL,
+            )));
 
             // process the fixed size type
             self.initialize_fixed_width_height_of_a_node(&new_card);
@@ -194,7 +204,9 @@ impl OrgChart {
                 let card_parent_option = card.borrow().parent.upgrade();
                 if card_parent_option.is_some() {
                     let card_parent = card_parent_option.unwrap();
-                    card.borrow_mut().pos_y = card_parent.borrow().pos_y + card_parent.borrow().height + self.vertical_gap;
+                    card.borrow_mut().pos_y = card_parent.borrow().pos_y
+                        + card_parent.borrow().height
+                        + self.vertical_gap;
                 } else {
                     card.borrow_mut().pos_y = 0.0;
                 }
@@ -254,7 +266,8 @@ impl OrgChart {
         let level_previous_option = node.borrow().level_previous.upgrade();
         if level_previous_option.is_some() {
             let level_previous = level_previous_option.unwrap();
-            node.borrow_mut().pos_x = level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
+            node.borrow_mut().pos_x =
+                level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
         } else {
             node.borrow_mut().pos_x = 0.0;
         }
@@ -270,7 +283,8 @@ impl OrgChart {
         }
 
         let level_previous = level_previous_option.unwrap();
-        let min_pos = level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
+        let min_pos =
+            level_previous.borrow().pos_x + level_previous.borrow().width + self.horizon_gap;
         if min_pos < root.borrow().pos_x {
             return;
         }
@@ -303,7 +317,8 @@ impl OrgChart {
             return;
         }
 
-        node.borrow_mut().pos_x = previous.borrow().pos_x + previous.borrow().width + self.horizon_gap;
+        node.borrow_mut().pos_x =
+            previous.borrow().pos_x + previous.borrow().width + self.horizon_gap;
         self.previous_card = Rc::downgrade(&node);
     }
 

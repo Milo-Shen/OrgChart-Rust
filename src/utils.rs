@@ -1,13 +1,14 @@
 // use std
-use std::cell::{RefCell};
-use std::collections::{VecDeque};
-use std::rc::{Rc};
+use std::cell::RefCell;
+use std::collections::VecDeque;
+use std::rc::Rc;
 
 //  use local types
 use crate::org_chart::CardNode;
 
 pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback: F)
-    where F: FnMut(Rc<RefCell<CardNode>>) -> ()
+where
+    F: FnMut(Rc<RefCell<CardNode>>) -> (),
 {
     if root.is_none() {
         return;
@@ -18,7 +19,9 @@ pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback
 
     while !stack.is_empty() {
         let node = Rc::clone(stack.back().unwrap());
-        if node.borrow().children.is_empty() || pre.borrow().id == node.borrow().children.last().unwrap().borrow().id {
+        if node.borrow().children.is_empty()
+            || pre.borrow().id == node.borrow().children.last().unwrap().borrow().id
+        {
             stack.pop_back();
             callback(Rc::clone(&node));
         } else {
@@ -33,7 +36,8 @@ pub fn traverse_tree_by_dfs<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback
 }
 
 pub fn traverse_tree_by_level<F>(root: Option<Rc<RefCell<CardNode>>>, mut callback: F)
-    where F: FnMut(Rc<RefCell<CardNode>>) -> ()
+where
+    F: FnMut(Rc<RefCell<CardNode>>) -> (),
 {
     let mut queue = VecDeque::from([root.unwrap()]);
 

@@ -38,11 +38,7 @@ pub fn range(min: i64, max: i64) -> i64 {
     rng.gen_range(min..max)
 }
 
-pub fn mock_org_chart_data(
-    count: i64,
-    max_child: i64,
-    is_range: bool,
-) -> Vec<MockChartData> {
+pub fn mock_org_chart_data(count: i64, max_child: i64, is_range: bool) -> Vec<MockChartData> {
     let mut result = vec![];
     let mut queue = VecDeque::new();
     let mut generate_id = GenerateID::new();

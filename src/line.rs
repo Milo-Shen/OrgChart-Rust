@@ -13,14 +13,7 @@ pub struct LineNode {
 }
 
 impl LineNode {
-    pub fn new(
-        x: f32,
-        y: f32,
-        w: f32,
-        h: f32,
-        mode: LineType,
-        border_width: f32,
-    ) -> LineNode {
+    pub fn new(x: f32, y: f32, w: f32, h: f32, mode: LineType, border_width: f32) -> LineNode {
         LineNode {
             pos_x: x,
             pos_y: y,
