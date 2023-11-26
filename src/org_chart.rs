@@ -109,6 +109,10 @@ impl OrgChart {
     }
 
     pub fn initialization(&mut self, card_raw_list: Vec<MockChartData>) {
+        let card_capacity = card_raw_list.len();
+        self.card_list = Vec::with_capacity(card_capacity);
+        self.line_list = Vec::with_capacity(card_capacity);
+
         // initial the root node
         let root_data = &card_raw_list[0];
         self.root = Some(Rc::new(RefCell::new(CardNode::new(root_data.id, 200.0, 100.0, CardNodeType::NORMAL))));
@@ -383,4 +387,6 @@ impl OrgChart {
             }
         })
     }
+
+    fn get_render_data() {}
 }
