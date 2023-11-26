@@ -131,7 +131,7 @@ impl OrgChart {
         self.link_level_prev_card_and_build_card_list();
 
         // generate the horizon x position and lines
-        // self.generate_horizon_pos_and_lines();
+        self.generate_horizon_pos_and_lines();
     }
 
     fn initialize_fixed_width_height_of_a_node(&self, node: &Rc<RefCell<CardNode>>) {
@@ -227,7 +227,7 @@ impl OrgChart {
         // todo: update the vertical space for each node
 
         // calculate the line pos
-        self.calculate_line_pos();
+        // self.calculate_line_pos();
     }
 
     fn update_node_horizon_space(&mut self) {
