@@ -311,7 +311,6 @@ impl OrgChart {
             return;
         }
 
-        let node_borrow = node.borrow();
         let previous_card = self.previous_card.upgrade().unwrap();
 
         let previous_card_parent_opt = previous_card.borrow().parent.upgrade();
@@ -319,11 +318,11 @@ impl OrgChart {
             return;
         }
 
-        if previous_card_parent_opt.unwrap().borrow().id != node_borrow.id {
+        if previous_card_parent_opt.unwrap().borrow().id != node.borrow().id {
             return;
         }
 
-        let node_children_len = node_borrow.children.len();
+        let node_children_len = node.borrow().children.len();
         if node_children_len == 1 {
             // todo: performance optimization -> readjust_horizon_pos_of_subtree ?
             // if the parent only has one child, the pos_x of the parent node will as same as the child
@@ -331,10 +330,11 @@ impl OrgChart {
             // odd number case
         } else if !is_even(node_children_len) {
             let mid_pos = node_children_len / 2;
-            node.borrow_mut().pos_x = node_borrow.children[mid_pos].borrow().pos_x;
+            let pos_x = node.borrow().children[mid_pos].borrow().pos_x;
+            node.borrow_mut().pos_x = pos_x;
         } else {
-            let start = node_borrow.children[0].borrow().pos_x;
-            let end = node_borrow.children[node_children_len - 1].borrow().pos_x;
+            let start = node.borrow().children[0].borrow().pos_x;
+            let end = node.borrow().children[node_children_len - 1].borrow().pos_x;
             node.borrow_mut().pos_x = (start + end) / 2.0;
         }
 
