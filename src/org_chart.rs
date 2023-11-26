@@ -280,7 +280,8 @@ impl OrgChart {
 
         while !queue.is_empty() {
             let node = queue.pop_front().unwrap();
-            node.borrow_mut().pos_x = node.borrow().pos_x + diff;
+            let new_pos_x = node.borrow().pos_x + diff;
+            node.borrow_mut().pos_x = new_pos_x;
             for child in &node.borrow().children {
                 queue.push_back(Rc::clone(child));
             }
