@@ -7,7 +7,7 @@ mod utils;
 
 fn main() {
     let start_time = Instant::now();
-    let mock_data = mock_org_chart_data::mock_org_chart_data(10, 3, false);
+    let mock_data = mock_org_chart_data::mock_org_chart_data(3000000, 20, false);
     let duration = start_time.elapsed();
     println!("mock data: {:?}", duration);
     let start_time = Instant::now();
@@ -19,7 +19,6 @@ fn main() {
     let duration = start_time.elapsed();
     println!("build org chart time {:?}", duration);
     let data = chart.get_render_data();
-    println!("{:#?}", data.0);
-    // println!("{:#?}", chart.root.unwrap());
+    // println!("{:#?}", data.0);
     println!("Hello, world!");
 }
