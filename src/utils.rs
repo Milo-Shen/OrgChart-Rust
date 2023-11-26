@@ -19,9 +19,7 @@ where
 
     while !stack.is_empty() {
         let node = Rc::clone(stack.back().unwrap());
-        if node.borrow().children.is_empty()
-            || pre.borrow().id == node.borrow().children.last().unwrap().borrow().id
-        {
+        if node.borrow().children.is_empty() || pre.borrow().id == node.borrow().children.last().unwrap().borrow().id {
             stack.pop_back();
             callback(Rc::clone(&node));
         } else {

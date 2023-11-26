@@ -27,10 +27,7 @@ pub struct MockChartData {
 pub fn build_card(generate_id: &mut GenerateID) -> MockChartData {
     let id = generate_id.get_next_id();
 
-    MockChartData {
-        id,
-        children: vec![],
-    }
+    MockChartData { id, children: vec![] }
 }
 
 pub fn range(min: i64, max: i64) -> i64 {
