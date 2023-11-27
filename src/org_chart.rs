@@ -63,8 +63,6 @@ pub struct OrgChart {
     fixed_height: f32,
     lite_width: f32,
     lite_height: f32,
-    fixed_overall_width: f32,
-    fixed_overall_height: f32,
     horizon_gap: f32,
     vertical_gap: f32,
     batch_column_capacity: i64,
@@ -72,14 +70,6 @@ pub struct OrgChart {
 
 impl OrgChart {
     pub fn new(fixed_size: bool, fixed_width: f32, fixed_height: f32, lite_width: f32, lite_height: f32, horizon_gap: f32, vertical_gap: f32, line_width: f32, batch_column_capacity: i64) -> OrgChart {
-        // process the fixed size type
-        let mut fixed_overall_width = 0.0;
-        let mut fixed_overall_height = 0.0;
-        if fixed_size {
-            fixed_overall_width = fixed_width + horizon_gap;
-            fixed_overall_height = fixed_height + vertical_gap;
-        }
-
         OrgChart {
             root: None,
             previous_card: Weak::new(),
@@ -92,8 +82,6 @@ impl OrgChart {
             fixed_height,
             lite_width,
             lite_height,
-            fixed_overall_width,
-            fixed_overall_height,
             horizon_gap,
             vertical_gap,
             batch_column_capacity,
